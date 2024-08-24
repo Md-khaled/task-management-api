@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Auth\Admin;
+namespace App\Http\Controllers\Auth\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\Admin\AdminLogin;
@@ -8,8 +8,7 @@ use App\Http\Requests\Auth\Admin\AdminRegistration;
 use App\Services\AuthService;
 use Illuminate\Support\Facades\Request;
 
-
-class AdminAuthController extends Controller
+class UserAuthController extends Controller
 {
     protected $authService;
 
@@ -20,6 +19,7 @@ class AdminAuthController extends Controller
     public function register(AdminRegistration $request)
     {
         return $this->authService->register($request);
+
     }
 
     public function login(AdminLogin $request)

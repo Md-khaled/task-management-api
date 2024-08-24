@@ -25,12 +25,16 @@ class AdminRepository implements AuthInterface
     public function login(Request $request)
     {
         if (!Auth::guard('admin')->attempt($request->only('email', 'password'))) {
-            return response()->json(['message' => 'Invalid login credentials'], 401);
+            return JSResponse::authenticationException('Invalid login credentials');
         }
+        $admin = auth()->guard('admin')->user();
+        $token = $admin->createToken('Admin_PersonalAccess_Token')->accessToken;
+        return JSResponse::success(['user' => $admin, 'token' => $token]);
+    }
 
-        $admin = $request->user('admin');
-        $token = $admin->createToken('Admin Personal Access Token')->accessToken;
-
-        return response()->json(['token' => $token], 200);
+    public function logout($request)
+    {
+        Auth::guard('admin')->logout();
+        return JSResponse::success([], 'Admin logged out successfully!');
     }
 }

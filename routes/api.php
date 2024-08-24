@@ -8,6 +8,5 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:api');
 
 /*api configuration*/
-Route::prefix('admin')->as('admin.')->group(base_path() . '/routes/admin.php');
-
-Route::prefix('user')->as('user.')->group(base_path() . '/routes/user.php');
+require __DIR__ . '/admin.php';
+require __DIR__ . '/user.php';

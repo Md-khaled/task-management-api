@@ -57,8 +57,12 @@ class JSResponse implements Responsable
             Log::error($this->message, $payload);
         }
 
-        if ($this->data) {
-            $result = ['success' => $this->success, 'message' => ucfirst($this->message), 'data' => $payload['data'], 'status' => $this->httpCode];
+        if ($this->success) {
+            if (empty($this->data)) {
+                $result = ['success' => $this->success, 'message' => ucfirst($this->message), 'status' => $this->httpCode];
+            } else {
+                $result = ['success' => $this->success, 'message' => ucfirst($this->message), 'data' => $payload['data'], 'status' => $this->httpCode];
+            }
         } else {
             $result = ['success' => $this->success, 'error' => ucfirst($payload['error']), 'status' => $this->httpCode];
         }
