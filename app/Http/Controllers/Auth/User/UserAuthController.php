@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Auth\User;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\Admin\AdminLogin;
-use App\Http\Requests\Auth\Admin\AdminRegistration;
+use App\Http\Requests\Auth\User\UserLogin;
+use App\Http\Requests\Auth\User\UserRegistration;
 use App\Services\AuthService;
 use Illuminate\Support\Facades\Request;
 
@@ -16,13 +16,13 @@ class UserAuthController extends Controller
     {
         $this->authService = $authService;
     }
-    public function register(AdminRegistration $request)
+    public function register(UserRegistration $request)
     {
         return $this->authService->register($request);
 
     }
 
-    public function login(AdminLogin $request)
+    public function login(UserLogin $request)
     {
         return $this->authService->login($request);
     }
@@ -30,5 +30,9 @@ class UserAuthController extends Controller
     public function logout(Request $request)
     {
         return $this->authService->logout($request);
+    }
+    public function me(Request $request)
+    {
+        return $this->authService->user($request);
     }
 }

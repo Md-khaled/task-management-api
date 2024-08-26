@@ -8,5 +8,8 @@ Route::prefix('admin')->controller(AdminAuthController::class)
     ->group(function () {
         Route::post('registration', 'register')->name('register');
         Route::post('login', 'login')->name('login');
-        Route::post('logout', 'logout')->name('logout');
+        Route::middleware(['auth:api-admin', 'scope:admin'])->group( function () {
+            Route::post('logout', 'logout')->name('logout');
+            Route::get('/user', 'me')->name('me');
+        });
     });

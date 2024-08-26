@@ -7,6 +7,7 @@ use App\Repositories\AdminRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Passport\Passport;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,6 +25,20 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Passport::tokensCan([
+            'admin' => 'Admin scope',
+            'user' => 'User scope',
+        ]);
+
+        Passport::setDefaultScope([
+            'user',
+        ]);
+
+        Passport::tokensExpireIn(now()->addDays(15));
+
+        Passport::refreshTokensExpireIn(now()->addDays(30));
+
+        Passport::personalAccessTokensExpireIn(now()->addMonths(6));
         Request::macro('isAdmin', function () {
             return request()->segment(2) === 'admin';
         });

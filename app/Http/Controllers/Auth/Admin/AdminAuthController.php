@@ -31,4 +31,9 @@ class AdminAuthController extends Controller
     {
         return $this->authService->logout($request);
     }
+
+    public function me(Request $request)
+    {
+        return $this->authService->user($request);
+    }
 }

@@ -24,17 +24,24 @@ class UserRepository implements AuthInterface
 
     public function login(Request $request)
     {
-        if (!Auth::guard('web')->attempt($request->only('email', 'password'))) {
-            return JSResponse::authenticationException('Invalid login credentials');
+        if (Auth::guard('web')->attempt($request->only('email', 'password'))) {
+            $user = Auth::guard('web')->user();
+            $token = $user->createToken('User Token', ['user'])->accessToken;
+            return JSResponse::success(['user' => $user, 'token' => $token]);
         }
-        $user = auth()->guard('web')->user();
-        $token = $user->createToken('User_PersonalAccess_Token')->accessToken;
-        return JSResponse::success(['user' => $user, 'token' => $token]);
+        return JSResponse::authenticationException('Invalid login credentials');
+
     }
 
     public function logout($request)
     {
-        Auth::guard('web')->logout();
+        Auth::user()->token()->revoke();
+
         return JSResponse::success([],'User logged out successfully!');
+    }
+
+    public function user($request)
+    {
+        return JSResponse::success(['user' => Auth::user()],'single user');
     }
 }

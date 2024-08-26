@@ -27,4 +27,8 @@ class AuthService
     {
         return $this->authRepository->logout($request);
     }
+    public function user($request)
+    {
+        return $this->authRepository->user($request);
+    }
 }
